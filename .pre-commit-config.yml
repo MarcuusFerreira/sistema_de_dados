@@ -1,0 +1,23 @@
+repos:
+  - repo: local
+    hooks:
+      - id: pylint-extract
+        name: pylint-extract
+        entry: pylint
+        language: system
+        types: [python]
+        args: ["extract"]
+      - id: pylint-transform
+        name: pylint-transform
+        entry: pylint
+        language: system
+        types: [python]
+        args: ["transform"]
+  - repo: local
+    hooks:
+      - id: requirements
+        name: requirements
+        entry: bash -c 'extract/venv/bin/pip3 freeze > requirements.txt; transform/venv/bin/pip3 freeze > requirements.txt; git add extract/requirements.txt; git add transform/requirements.txt'
+        language: system
+        pass_filenames: false
+        stages: [commit]
